@@ -28,9 +28,16 @@ jobs:
       - run:
           name: Test 3
           command: echo 'Testing... Tested!!'
+  deploy:
+    docker:
+      - image: alpine:3.7
+    steps:
+      - run:
+          name: Deploy
+          command: echo 'Deploying... Deployed!!'
 workflows:
   version: 2.1
-  build-test:
+  build-test-deploy:
     jobs:
       - build
       - test1:
@@ -38,7 +45,12 @@ workflows:
             - build
       - test2:
           requires:
-            - test1
+            - build
       - test3:
           requires:
+            - build
+      - deploy:
+          requires:
+            - test1
             - test2
+            - test3
