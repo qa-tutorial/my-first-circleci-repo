@@ -1,22 +1,44 @@
 version: 2.1
 jobs:
-  one:
+  build:
     docker:
       - image: alpine:3.7
     steps:
       - run:
-          name: Job One
-          command: echo 'This is the first job!'
-  two:
+          name: Build
+          command: echo 'Building... Built!'
+  test1:
     docker:
       - image: alpine:3.7
     steps:
       - run:
-          name: Job Two
-          command: echo 'This is the second job!'
+          name: Test 1
+          command: echo 'Testing... Tested!!'
+  test2:
+    docker:
+      - image: alpine:3.7
+    steps:
+      - run:
+          name: Test 2
+          command: echo 'Testing... Tested!!'
+  test3:
+    docker:
+      - image: alpine:3.7
+    steps:
+      - run:
+          name: Test 3
+          command: echo 'Testing... Tested!!'
 workflows:
   version: 2.1
-  one_and_two:
+  build-test:
     jobs:
-      - one
-      - two
+      - build
+      - test1:
+          requires:
+            - build
+      - test2:
+          requires:
+            - test1
+      - test3:
+          requires:
+            - test2
